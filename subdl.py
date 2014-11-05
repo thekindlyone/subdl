@@ -63,6 +63,3 @@ Skipped {} files
 Total {} files processed
 ******************************
 '''.format(done,skipped,done+skipped)
-
-
-
