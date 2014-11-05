@@ -1,7 +1,6 @@
 import os,sys,hashlib
 from os.path import join,getsize,splitext,dirname
 import requests
-import itertools
 movie_exts=[".avi",".mp4",".mkv",".mpg",".mpeg",".mov",".rm",".vob",".wmv",".flv",".3gp"]
 
 def getHash(name):
