@@ -16,26 +16,19 @@ def getHash(name):
 def srtify(fn):
     return splitext(fn)[0]+'.srt'
 
-def get_page(url,headers,max_attempts):
-    for i in xrange(max_attempts):
-        r = requests.get(url,headers=headers)
-        if r.status_code == 200 :
-            return r.content
-    print r.status_code
-    return False
-
 def getsubs(md5):
-    headers={'User-Agent':'SubDB/1.0 (subdl/0.1; http://thekindlyone.info)'}
+    headers={'User-Agent':'SubDB/1.0 (subdl/0.1; http://github.com/thekindlyone/subdl)'}
     url="http://api.thesubdb.com/?action=download&hash="+md5+"&language=en"
     try:
-        content=get_page(url,headers,5)
+        r = requests.get(url,headers=headers)
+        if r.status_code==200:
+            return True,r.content
+        else:
+            return False,r.status_code
     except:
         e = sys.exc_info()[0]
         return False,e
-    if content:
-        return True,content
-    else :
-        return False,"Subs Not Found"
+
 
 def writesubs(name,subs):
     with open(srtify(name),'w') as f:
