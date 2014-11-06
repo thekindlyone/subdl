@@ -37,8 +37,7 @@ def fetch_files(cwd):
     for root,dirs,files in os.walk(cwd):
         for name in files:
             if splitext(name)[-1] in movie_exts and srtify(name) not in files:
-                yield join(root, name)   
-    
+                yield join(root, name)       
 
 cwd="."
 if len(sys.argv)>1:
