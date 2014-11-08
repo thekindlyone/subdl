@@ -39,26 +39,40 @@ def fetch_files(cwd):
             if splitext(name)[-1] in movie_exts and srtify(name) not in files:
                 yield join(root, name)       
 
-cwd="."
-if len(sys.argv)>1:
-    cwd=sys.argv[1]
-done,skipped=0,0
-for name in fetch_files(cwd):
-    print "processing ",name
-    status,content=getsubs(getHash(name))
-    if not status:
-        skipped+=1
-        print "Skipped. Reason: ",content
-        continue
+
+def main():
+    cwd="."
+    if len(sys.argv)>1:
+        cwd=sys.argv[1]
+    done,skipped=0,0
+    weirderrors=False
+    for name in fetch_files(cwd):
+        print "processing ",name
+        status,content=getsubs(getHash(name))       
+
+        if not status:
+            skipped+=1
+            print "Skipped. Reason: ",content
+            if len(str(content))>4:
+                weirderrors=True
+            continue
+        else:
+            writesubs(name,content)
+            print 'subs written'
+            done+=1
+    print '''
+    ******************************
+    REPORT
+    Done {} files
+    Skipped {} files
+    Total {} files processed
+    ******************************
+    '''.format(done,skipped,done+skipped)
+    if not weirderrors:
+        return 0
     else:
-        writesubs(name,content)
-        print 'subs written'
-        done+=1
-print '''
-******************************
-REPORT
-Done {} files
-Skipped {} files
-Total {} files processed
-******************************
-'''.format(done,skipped,done+skipped)
+        return 1
+
+
+if __name__ == '__main__':
+    sys.exit(main())
