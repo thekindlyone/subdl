@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+import os
 import os,sys,hashlib
 from os.path import join,getsize,splitext,dirname
 import requests
@@ -40,6 +42,12 @@ def fetch_files(cwd):
                 yield join(root, name)       
 
 
+def display(report):
+    os.system('zenity --info --text="{}"'.format(report))
+
+
+
+
 def main():
     cwd="."
     if len(sys.argv)>1:
@@ -60,7 +68,7 @@ def main():
             writesubs(name,content)
             print 'subs written'
             done+=1
-    print '''
+    report= '''
     ******************************
     REPORT
     Done {} files
@@ -68,6 +76,8 @@ def main():
     Total {} files processed
     ******************************
     '''.format(done,skipped,done+skipped)
+    print report
+    display(report)
     if not weirderrors:
         return 0
     else:
